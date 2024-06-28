@@ -27,4 +27,4 @@ jobs:
           mkdir ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
           git remote add target org-85143255@github.com:kyanny-corp-enterprise-cloud-testing/zd-2857436-target.git
-          git push target ${{ env.BRANCH_TO_MIRROR }}
+          git push target ${{ env.BRANCH_TO_MIRROR }}:${{ env.BRANCH_TO_MIRROR }}
