@@ -1,18 +1,30 @@
-name: Mirroring
+name: Mirror2
 
-on:
+on: 
   workflow_dispatch:
+    inputs:
+      branch_to_mirror:
+        description: branch name to be mirrored
+        required: true
+        type: string
 
 jobs:
-  to_gitlab:
+  mirror2:
     runs-on: ubuntu-latest
-    steps:                                              # <-- must use actions/checkout before mirroring!
-      - uses: actions/checkout@v4
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: pixta-dev/repository-mirroring-action@v1
-        with:
-          target_repo_url:
-            org-85143255@github.com:kyanny-corp-enterprise-cloud-testing/zd-2857436-target.git
-          ssh_private_key:                              # <-- use 'secrets' to pass credential information.
-            ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Mirror
+        env:
+          BRANCH_TO_MIRROR: ${{ inputs.branch_to_mirror }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          git remote add target org-85143255@github.com:kyanny-corp-enterprise-cloud-testing/zd-2857436-target.git
+          git push target ${{ env.BRANCH_TO_MIRROR }}
