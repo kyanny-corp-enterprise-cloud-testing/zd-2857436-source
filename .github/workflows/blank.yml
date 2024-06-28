@@ -19,6 +19,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: debug
+        run: |
+          ls -lah .
+          git branch
+          git ls-files
+
       - name: Mirror
         env:
           BRANCH_TO_MIRROR: ${{ inputs.branch_to_mirror }}
