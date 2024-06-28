@@ -23,6 +23,7 @@ jobs:
         run: |
           ls -lah .
           git branch
+          git show-ref
           git ls-files
 
       - name: Mirror
